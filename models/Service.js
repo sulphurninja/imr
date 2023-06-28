@@ -1,22 +1,33 @@
 const mongoose = require('mongoose');
 
+let Service;
 
-// mongoose.deleteModel('Service')
-
-const serviceSchema = new mongoose.Schema({
-  serviceName: {
-    type: String,
-    required: true
-  },
-  description: {
-    type: String,
-    required: true
-  },
-  model: {
+try {
+  // Check if the model already exists
+  Service = mongoose.model('Service');
+} catch (error) {
+  // Define the model if it doesn't exist
+  const serviceSchema = new mongoose.Schema({
+    subcategory: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Model',
-    required: true
-  }
-}, { collection: 'services' });
+    ref: 'Subcategory',
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  description:{
+    type: String,
+    required: true,
+  },
+  image: {
+    type: String,
+    required: true,
+  },
+  });
 
-module.exports = mongoose.model('Service', serviceSchema);
+  Service = mongoose.model('Service', serviceSchema);
+}
+
+module.exports = Service;

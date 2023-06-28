@@ -4,7 +4,10 @@ import Masthead from '../components/masthead';
 import Aboutus from '../components/aboutus';
 import Skills from '../components/skills';
 import OrderForm from '../components/orderform'
+import Footer from '../components/Footer'
+import Navbar from '../components/Navbar'
 import { GetServerSideProps, NextPage } from 'next';
+import CategoriesCards from '../components/orderform';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -30,19 +33,22 @@ const Home: NextPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+<Navbar/>
       <Masthead />
       <Aboutus />
       <Skills />
       <section id='mobiles' className='bg-black '>
         {/* <Tabs categories={categories.items} /> */}
-        <OrderForm />
+        <div className='mt-[-10%]'>
+        <CategoriesCards />
+
+        </div>
         {/**Mobiles */}
         {/* <MobileList mobiles={mobiles.items} /> */}
 
       </section>
 
-
+<Footer/>
 
     </div>
   )

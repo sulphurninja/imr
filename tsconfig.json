@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/AdminPanel.jsx", "components/AddService.jsx", "components/orderform.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "components/AddCategoryDialogue.jsx", "components/AddService.jsx", "components/orderform.jsx"],
   "exclude": ["node_modules"]
 }

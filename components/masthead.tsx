@@ -12,7 +12,7 @@ const Masthead: React.FC = () => {
       className='text-white min-h-screen flex flex-col items-center justify-center sticky top-0 -z-10'>
         <img src='/bg.gif' className='absolute w-full h-full object-cover' />
         <div className='pt-10 absolute mt-[350px] ml-auto mr-auto'>
-            <Image src="/logo.png" alt="imr care logo" width={300} height={300}
+            <Image src="/logo.png" alt="imr care logo" width={150} height={150}
             />
         </div>
         <div className='p-12 font-bold z-10 text-white  drop-shadow-[0_5px_3px_rgba(0,0,0,0.4)] text-center flex-1 flex items-center justify-center flex-col'>
