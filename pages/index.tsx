@@ -6,6 +6,8 @@ import Skills from '../components/skills';
 import OrderForm from '../components/orderform'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
+import Yimrc from '../components/Yimrc'
+import Slider from '../components/slider'
 import { GetServerSideProps, NextPage } from 'next';
 import CategoriesCards from '../components/orderform';
 
@@ -33,22 +35,25 @@ const Home: NextPage = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-<Navbar/>
+      <Navbar />
       <Masthead />
       <Aboutus />
       <Skills />
+      <Slider />
+      <Yimrc />
+
       <section id='mobiles' className='bg-black '>
         {/* <Tabs categories={categories.items} /> */}
-        <div className='mt-[-10%]'>
-        <CategoriesCards />
+        <div>
+        {/* <div className='mt-[-10%]'> */}
+          <CategoriesCards />
 
         </div>
         {/**Mobiles */}
         {/* <MobileList mobiles={mobiles.items} /> */}
 
       </section>
-
-<Footer/>
+      <Footer />
 
     </div>
   )

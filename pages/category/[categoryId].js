@@ -50,7 +50,7 @@ const CategoryPage = () => {
 
         <h1 className="text-2xl font-mono text-white font-bold mb-4">Category: {categoryName}</h1>
 
-        <div className="grid grid-cols-4 md:grid-cols-3 lg:grid-cols-4 gap-4 font-coffee text-center">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 font-coffee text-center">
           {subcategories.map((subcategory) => (
             <Link key={subcategory._id} href={`/subcategory/${subcategory._id}`}>
               <div className="block rounded-lg overflow-hidden hover:shadow-md transform hover:scale-105 ">
