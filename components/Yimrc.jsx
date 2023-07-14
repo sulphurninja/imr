@@ -2,7 +2,7 @@ import React from 'react'
 
 const Yimrc = () => {
     return (
-        <div className='text-white bg-gray-300 text-lg p-2 xl:p-7 py-20  text-center'>
+        <div id='about' className='text-white bg-gray-300 text-lg p-2 xl:p-7 py-20  text-center'>
             <h1 className='text-cyan-950 text-3xl pt-16'>Why IMR Care</h1>
             <h1 className='text-cyan-700 text-lg mb-10'>Solution for every problem</h1>
             <div className='text-black grid grid-cols-3 gap-1 md:gap-10 mb-24 font-bold'>

@@ -21,7 +21,7 @@ const CategoriesCards = () => {
   }, []);
 
   return (
-    <div className="container mx-auto p-4">
+    <div id='order' className="container mx-auto p-4">
       <div className='mr-auto ml-auto text-center'>
         <span className={`${s.skillText} mt-[50px] text-[30px] mb-16  lg:text-[50px] text-center inline-block after:content-['_']  text-white font-mono -100 -200 `}>
           📱 SELECT YOUR MOBILE BRAND

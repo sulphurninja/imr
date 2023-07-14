@@ -5,6 +5,8 @@ import Aboutus2 from '../components/aboutus2'
 import AdminPanel from '../components/AddCategoryDialogue'
 import AddCategoryDialog from '../components/AddCategoryDialogue'
 import AddSubCategoryDialog from '../components/SubCategoryDialogue'
+import AddService from '../components/AddService'
+import AddServiceDialog from '../components/AddService'
 
 
 const admin = () => {
@@ -23,6 +25,7 @@ const admin = () => {
       <Aboutus2 />
       <AddCategoryDialog />
       <AddSubCategoryDialog />
+ <AddServiceDialog/>
     </div>
   )
 }

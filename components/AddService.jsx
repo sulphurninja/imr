@@ -1,107 +1,172 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
-const AddService = () => {
-    const [selectedModel, setSelectedModel] = useState('');
-    const [selectedBrand, setSelectedBrand] = useState('');
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [brands, setBrands] = useState([]);
-    const [models, setModels] = useState([]);
-    const [isSubmitted, setIsSubmitted] = useState(false); // new state variable
+const AddServiceDialog = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedSubcategory, setSelectedSubcategory] = useState('');
+  const [subcategories, setSubcategories] = useState([]);
+  const [serviceName, setServiceName] = useState('');
+  const [serviceImage, setServiceImage] = useState('');
+  const [serviceDescription, setServiceDescription] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
-    useEffect(() => {
-        // Fetch all brands on page load
-        axios.get('/api/getBrands').then((res) => {
-            setBrands(res.data.data);
-            // console.log(brands);
-        });
-    }, []);
+  const openDialog = () => {
+    setIsOpen(true);
+  };
 
+  const closeDialog = () => {
+    setIsOpen(false);
+    setSelectedSubcategory('');
+    setServiceName('');
+    setServiceImage('');
+    setServiceDescription('');
+    setIsSubmitted(false);
+  };
 
-    useEffect(() => {
-        // Fetch all brands on page load
-        axios.get(`/api/getModels?brand=${selectedBrand}`).then((res) => {
-            setModels(res.data.data);
-            // console.log(models);
-        });
-    }, [selectedBrand]);
+  useEffect(() => {
+    // Fetch all subcategories on page load
+    axios.get('/api/getAllSubCategories').then((res) => {
+      setSubcategories(res.data.data);
+    });
+  }, []);
 
-    const handleModelChange = (event) => {
-        // Set selected model
-        setSelectedModel(event.target.value);
-    };
+  const handleServiceImageUpload = (event) => {
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'x8yy4v2u');
+    setIsUploading(true);
 
-    const handleBrandChange = (event) => {
-        // Fetch models for selected brand
-        const brandId = event.target.value;
-        setSelectedBrand(brandId);
+    axios
+      .post('https://api.cloudinary.com/v1_1/kaam-24x7/image/upload', formData)
+      .then((response) => {
+        setServiceImage(response.data.secure_url);
+        setIsUploading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsUploading(false);
+      });
+  };
 
-    };
+  const handleSubcategoryChange = (event) => {
+    const subcategoryId = event.target.value;
+    setSelectedSubcategory(subcategoryId);
+  };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+  const handleServiceSubmit = (event) => {
+    event.preventDefault();
 
-        // Make API request to add new service
-        axios.post('/api/services', {
-            serviceName: name,
-            description: description,
-            model: selectedModel,
-        })
-            .then(() => {
-                setIsSubmitted(true);
-            });
-    };
+    axios
+      .post('/api/addServices', {
+        name: serviceName,
+        image: serviceImage,
+        description: serviceDescription,
+        subcategoryId: selectedSubcategory,
+      })
+      .then((res) => {
+        // Handle the response as needed
+        setServiceName('');
+        setServiceImage('');
+        setServiceDescription('');
+      });
+  };
 
-    return (
-        <div>
-            <h2 className='block text-3xl font-mono text-white -700 font-bold mt-12'>Add Service</h2>
-            {isSubmitted ? (
-                <p className="text-green-500  lg:text-3xl font-bold mt-4">Service added successfully!</p>
-            ) : (
-                <form onSubmit={handleSubmit}>
-                    <label className='block text-white -700 font-bold mt-8'>
-                        Brand:
-                        <select className='text-black w-full py-2 px-3 border rounded appearance-none' value={selectedBrand} onChange={handleBrandChange}>
-                            <option value="">Select a brand</option>
-                            {brands.map((brand) => (
-                                <option key={brand._id} value={brand._id}>
-                                    {brand.title}
-                                </option>
-                            ))}
-                        </select>
-                    </label>
-
-                    {selectedBrand && (
-                        <label className='block text-white -700 font-bold mt-8  '>
-                            Model:
-                            <select className='text-black w-full py-2 px-3 border rounded appearance-none' value={selectedModel} onChange={handleModelChange}>
-                                <option value="">Select a model</option>
-                                {models.map((model) => (
-                                    <option key={model._id} value={model._id}>
-                                        {model.modelName}
-                                    </option>
-                                ))}
-                            </select>
-                        </label>
-                    )}
-
-                    <label className='block text-white -700 font-bold mt-8'>
-                        Name:
-                        <input type="text" className='appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' value={name} onChange={(event) => setName(event.target.value)} />
-                    </label>
-
-                    <label className='block text-white -700 font-bold mt-8'>
-                        Description:
-                        <textarea value={description} className='appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' onChange={(event) => setDescription(event.target.value)} />
-                    </label>
-
-                    <button type="submit" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'>Submit</button>
-                </form>
-            )
-            }
+  return (
+    <div className="relative">
+      <button
+        className="bg-[#5E474C] mt-10 hover:bg-[#F6F4EE] hover:text-[#5E474C] text-white font-darkage font-semibold py-2 px-4 rounded"
+        onClick={openDialog}
+      >
+        Add a Service
+      </button>
+      {isOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-[#5E474C] text-white rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-bold font-coffee mb-4">Add a Service</h2>
+            <form onSubmit={handleServiceSubmit}>
+              <div className="mb-4">
+                <label htmlFor="subcategory" className="block text-[#F6F4EE] font-bold font-darkage mb-2">
+                  Subcategory
+                </label>
+                <select
+                  id="subcategory"
+                  value={selectedSubcategory}
+                  onChange={handleSubcategoryChange}
+                  className="w-full border font-darkage bg-[#F6F4EE] text-[#5E474C] border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"
+                  required
+                >
+                  <option value="">Select a subcategory</option>
+                  {subcategories.map((subcategory) => (
+                    <option key={subcategory._id} value={subcategory._id}>
+                      {subcategory.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-4">
+                <label htmlFor="serviceName" className="block text-[#F6F4EE] font-bold font-darkage mb-2">
+                  Service Name
+                </label>
+                <input
+                  type="text"
+                  id="serviceName"
+                  value={serviceName}
+                  onChange={(e) => setServiceName(e.target.value)}
+                  className="w-full font-darkage border border-gray-300 rounded px-3 py-2 focus:outline-none bg-[#F6F4EE] text-[#5E474C] focus:border-[#F6F4EE]"
+                  placeholder="Enter Service name"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="serviceImage" className="block text-[#F6F4EE] font-bold font-darkage mb-2">
+                  Service Image
+                </label>
+                <input
+                  type="file"
+                  id="serviceImage"
+                  onChange={handleServiceImageUpload}
+                  accept="image/*"
+                  className="w-full font-darkage"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="serviceDescription" className="block text-[#F6F4EE] font-bold font-darkage mb-2">
+                  Service Description
+                </label>
+                <textarea
+                  id="serviceDescription"
+                  value={serviceDescription}
+                  onChange={(e) => setServiceDescription(e.target.value)}
+                  className="w-full font-darkage border border-gray-300 rounded px-3 py-2 focus:outline-none bg-[#F6F4EE] text-[#5E474C] focus:border-[#F6F4EE]"
+                  placeholder="Enter Service description"
+                  required
+                ></textarea>
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  className="text-[#F6F4EE] font-extrabold font-coffee mr-4"
+                  onClick={closeDialog}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-[#F6F4EE] hover:bg-green-200 text-[#5E474C] font-semibold py-2 px-4 rounded font-coffee"
+                  disabled={isUploading}
+                >
+                  {isUploading ? 'Uploading...' : 'Submit'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-    )
-}
+      )}
+    </div>
+  );
+};
 
-export default AddService
+export default AddServiceDialog;

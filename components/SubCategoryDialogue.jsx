@@ -29,6 +29,21 @@ const AddSubcategoryDialog = () => {
     });
   }, []);
 
+  useEffect(() => {
+    fetchSubcategories();
+  }, []);
+
+  const fetchSubcategories = async () => {
+    try {
+      const response = await axios.get('/api/getAllSubCategories');
+      const { data } = response.data;
+      setSubCategories(data);
+    } catch (error) {
+      console.error('Error fetching subcategories:', error);
+    }
+  };
+
+
   const handleSubCategoryImageUpload = (event) => {
     const file = event.target.files[0];
     const formData = new FormData();
@@ -69,6 +84,35 @@ const AddSubcategoryDialog = () => {
       });
   };
 
+
+  const handleEditSubCategory = (subcategoryId) => {
+    const newName = prompt('Enter the new category name:');
+    if (newName) {
+      axios
+        .put(`/api/subcategories/${subcategoryId}`, { name: newName })
+        .then((response) => {
+          console.log('Subcategory edited successfully:', response.data.subcategory);
+          fetchCategories(); // Fetch categories again to update the list
+        })
+        .catch((error) => {
+          console.error('Error editing subcategory:', error);
+        });
+    }
+  };
+
+  const handleDeleteSubCategory = (subcategoryId) => {
+    if (confirm('Are you sure you want to delete this category?')) {
+      axios
+        .delete(`/api/subcategories/${subcategoryId}`)
+        .then((response) => {
+          console.log('Category deleted successfully');
+         
+        })
+        .catch((error) => {
+          console.error('Error deleting subcategory:', error);
+        });
+    }
+  };
 
   return (
     <div className="relative">
@@ -144,6 +188,28 @@ const AddSubcategoryDialog = () => {
                 >
                   {isUploading ? 'Uploading...' : 'Submit'}
                 </button>
+                <div className="max-h-48 overflow-y-auto"> {/* Set the max height and add scrollbar */}
+         
+                <ul>
+                    {subCategories.map((subcategory) => (
+                      <li key={subcategory._id} className="flex items-center mb-2">
+                        <p className="mr-2">{subcategory.name}</p>
+                        <button
+                          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2"
+                          onClick={() => handleEditSubCategory(subcategory._id)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                          onClick={() => handleDeleteSubCategory(subcategory._id)}
+                        >
+                          Delete
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+              </div>
               </div>
             </form>
           </div>

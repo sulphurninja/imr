@@ -59,19 +59,19 @@ const Header = () => {
               Home
             </a>
             <a
-              href="#"
+              href="#about"
               className="text-gray-300 hover:bg-green-200 hover:text-black px-3 py-2 rounded-md text-xl font-medium"
             >
               About
             </a>
             <a
-              href="#"
+              href="#order"
               className="text-gray-300 hover:bg-green-200 hover:text-black px-3 py-2 rounded-md text-xl font-medium"
             >
               Services
             </a>
             <a
-              href="#"
+              href="#contact"
               className="text-gray-300 hover:bg-green-200 hover:text-black px-3 py-2 rounded-md text-xl font-medium"
             >
               Contact

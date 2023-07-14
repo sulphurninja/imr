@@ -4,7 +4,6 @@ import Service from '../../models/Service';
 connectDB();
 
 export default async function handler(req, res) {
-    
       try {
         const { serviceName, description, model} = req.body;
         const service = new Service({
